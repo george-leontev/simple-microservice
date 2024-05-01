@@ -1,0 +1,4 @@
+aiormq
+fastapi
+uvicorn
+python-socketio

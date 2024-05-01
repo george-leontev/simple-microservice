@@ -1,0 +1,9 @@
+services:
+    service-bus:
+        image: rabbitmq:3.13.1-management
+        environment:
+            RABBITMQ_DEFAULT_USER: george
+            RABBITMQ_DEFAULT_PASS: abcdef
+        ports:
+            - 5672:5672
+            - 15672:15672

@@ -2,10 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "mail-service",
+            "name": "mail-service-1",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.main"
-        }
+            "module": "src.main",
+            "args": ["1"]
+        },
+        {
+            "name": "mail-service-2",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "src.main",
+            "args": ["2"]
+        },
     ]
 }

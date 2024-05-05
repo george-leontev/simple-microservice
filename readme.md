@@ -1,11 +1,9 @@
-Database
-
-User table
-
 JWT
 
 login form
 
-sqlalchemy
+login page
 
-docker compose with database
+react router
+
+volume

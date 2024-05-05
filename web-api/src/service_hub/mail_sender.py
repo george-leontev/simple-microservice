@@ -1,10 +1,11 @@
 import aiormq
 
 from src.models.mail_model import MailModel
+from src.utils.environments import is_production
 
 
 async def send_mail_request(mail: MailModel):
-    connection = await aiormq.connect('amqp://george:abcdef@localhost:5672/')
+    connection = await aiormq.connect(f"amqp://george:abcdef@{'service-bus' if is_production() else 'localhost'}:5672/")
 
     channel = await connection.channel()
 

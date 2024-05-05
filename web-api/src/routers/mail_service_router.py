@@ -1,8 +1,12 @@
 import uuid
 
+from datetime import datetime, UTC
+
 from fastapi.routing import APIRouter
 from fastapi.responses import Response
 
+from src.data_models.posted_mail_data_model import PostedMailDataModel
+from src.data_access.data_access import SessionLocal
 from src.service_hub.mail_sender import send_mail_request
 from src.models.mail_model import MailModel
 from src.web_socket_hub import sio
@@ -21,8 +25,19 @@ async def send_mail(mail: MailModel):
 
 
 @router.get("")
-async def get_acknowledgement(mail_uid: str):
-    print(f"Email was sent with the uid: {mail_uid}")
-    await sio.emit("get_acknowledgement", data=mail_uid)
+async def get_acknowledgement(service_uid: str, mail_uid: str):
+    with SessionLocal() as session:
+        session.add(
+            PostedMailDataModel(
+                mail_uid=mail_uid,
+                date=datetime.now(UTC),
+                user_id=1
+            )
+        )
+        session.commit()
+        
+    await sio.emit(
+        "get_acknowledgement", data={"service_uid": service_uid, "mail_uid": mail_uid}
+    )
 
     return Response(status_code=200)

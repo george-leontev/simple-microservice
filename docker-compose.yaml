@@ -1,9 +1,65 @@
 services:
     service-bus:
         image: rabbitmq:3.13.1-management
+        container_name: service-bus
         environment:
             RABBITMQ_DEFAULT_USER: george
             RABBITMQ_DEFAULT_PASS: abcdef
         ports:
             - 5672:5672
             - 15672:15672
+
+    database:
+        image: postgres:latest
+        container_name: database
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=abcdef
+        ports:
+            - 5432:5432
+
+    web-api:
+        build:
+            dockerfile: Dockerfile
+            context: ./web-api
+        container_name: web-api
+        ports:
+            - 8000:8000
+        depends_on:
+            - database
+            - service-bus
+        restart: always
+
+    web-ui:
+        build:
+            dockerfile: Dockerfile
+            context: ./web-ui
+        container_name: web-ui
+        ports:
+            - 3000:80
+        depends_on:
+            - web-api
+
+    mail-service-1:
+        build:
+            dockerfile: Dockerfile
+            context: ./mail-service
+        container_name: mail-service-1
+        environment:
+            - TAG=1
+        depends_on:
+            - service-bus
+            - web-api
+        restart: always
+
+    mail-service-2:
+        build:
+            dockerfile: Dockerfile
+            context: ./mail-service
+        container_name: mail-service-2
+        environment:
+            - TAG=2
+        depends_on:
+            - service-bus
+            - web-api
+        restart: always

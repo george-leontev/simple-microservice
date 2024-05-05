@@ -7,12 +7,16 @@ import { io } from 'socket.io-client';
 function App() {
   const formRef = useRef<HTMLFormElement>(null);
 
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
   useEffect(() => {
     const socket = io("http://localhost:8000", {
       transports: ['websocket']
     });
     socket.on("get_acknowledgement", (message: any) => {
-      console.log(message);
+      if (textAreaRef.current) {
+        textAreaRef.current.value += `mail ${message.mail_uid} was send by service ${message.service_uid}\n\r`;
+      }
     });
 
     return () => {
@@ -59,6 +63,10 @@ function App() {
 
       <div className='navbar'>
         <button onClick={handleInputChange}>SEND</button>
+      </div>
+
+      <div>
+        <textarea style={{ width: 400, height: 200 }} ref={textAreaRef}></textarea>
       </div>
 
     </div>

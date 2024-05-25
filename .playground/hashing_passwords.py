@@ -1,3 +1,7 @@
-import hashlib
+from passlib.context import CryptContext
 
-print(hashlib.sha256(b'abcdef').hexdigest())
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+hashed_pssword = pwd_context.hash('abcdef')
+
+print(hashed_pssword)

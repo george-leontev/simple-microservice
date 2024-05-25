@@ -17,6 +17,8 @@ services:
             - POSTGRES_PASSWORD=abcdef
         ports:
             - 5432:5432
+        volumes:
+            - /home/george/simple-microservice-volume:/var/lib/postgresql/data
 
     web-api:
         build:
@@ -28,6 +30,8 @@ services:
         depends_on:
             - database
             - service-bus
+        environment:
+            - ENVIRONMENT=production
         restart: always
 
     web-ui:
@@ -47,6 +51,8 @@ services:
         container_name: mail-service-1
         environment:
             - TAG=1
+            - ENVIRONMENT=production
+            - APIKEY=748ee205c20364e9da1efd637a35a217a7699628a688cba7956d76ca0690b00b
         depends_on:
             - service-bus
             - web-api
@@ -59,6 +65,8 @@ services:
         container_name: mail-service-2
         environment:
             - TAG=2
+            - ENVIRONMENT=production
+            - APIKEY=81f81296976b6010fff75bd1196edea6ad05a6fe9ee995372430ddcb3155e681
         depends_on:
             - service-bus
             - web-api

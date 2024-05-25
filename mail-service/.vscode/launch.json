@@ -6,14 +6,14 @@
             "type": "debugpy",
             "request": "launch",
             "module": "src.main",
-            "args": ["1"]
+            "args": ["1", "748ee205c20364e9da1efd637a35a217a7699628a688cba7956d76ca0690b00b"]
         },
         {
             "name": "mail-service-2",
             "type": "debugpy",
             "request": "launch",
             "module": "src.main",
-            "args": ["2"]
+            "args": ["2", "81f81296976b6010fff75bd1196edea6ad05a6fe9ee995372430ddcb3155e681"]
         },
     ]
 }

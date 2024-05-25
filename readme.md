@@ -1,9 +1,5 @@
 JWT
 
-login form
+logging
 
-login page
-
-react router
-
-volume
+roles and user permissions

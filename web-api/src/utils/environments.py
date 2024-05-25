@@ -1,5 +1,10 @@
 import os
 
+class EnvironmentHelper:
 
-def is_production():
-    return os.environ.get('PRODUCTION') is not None
+    @staticmethod
+    def is_production():
+        env = os.environ.get('ENVIRONMENT')
+        return env is not None and env == 'production'
+
+

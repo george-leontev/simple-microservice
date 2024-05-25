@@ -8,8 +8,18 @@ import os
 
 from src.models.mail_model import MailModel
 
+def is_production():
+    env = os.environ.get('ENVIRONMENT')
 
-is_production = os.environ.get('PRODUCTION') is not None
+    return env is not None and env == 'production'
+
+def get_api_key():
+    api_key = os.environ.get('APIKEY')
+
+    if api_key is None and len(sys.argv) > 2:
+        api_key = sys.argv[2]
+
+    return api_key
 
 service_uid = "0"
 
@@ -28,10 +38,13 @@ async def message_callback(message: aiormq.abc.DeliveredMessage):
     await message.channel.basic_ack(
         message.delivery.delivery_tag
     )
-
-    async with aiohttp.ClientSession() as session:
-        async with session.get(f"http://{'web-api' if is_production else 'localhost'}:8000/mail-services?service_uid={service_uid}&mail_uid={mail.uid}"):
-            pass
+    api_key = get_api_key()
+    if api_key is not None:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"http://{'web-api' if is_production() else 'localhost'}:8000/mail-services?service_uid={service_uid}&mail_uid={mail.uid}", headers={
+                "Authorization": api_key
+            }):
+                pass
 
 async def main():
     try_conection_counter = 1
@@ -39,7 +52,7 @@ async def main():
         if try_conection_counter > 100:
             break
         try:
-            connection = await aiormq.connect(f"amqp://george:abcdef@{'service-bus' if is_production else 'localhost'}:5672/")
+            connection = await aiormq.connect(f"amqp://george:abcdef@{'service-bus' if is_production() else 'localhost'}:5672/")
             break
         except:
             time.sleep(1)

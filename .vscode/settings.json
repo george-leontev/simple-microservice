@@ -10,5 +10,10 @@
         "**/web-api": true,
         "**/web-ui": true,
         "**/__pycache__": true
-    }
+    },
+    "pylint.path": [
+        "../.venv/python",
+        "-m",
+        "pylint"
+    ]
 }

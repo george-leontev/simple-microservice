@@ -2,3 +2,8 @@ aiormq
 fastapi
 uvicorn
 python-socketio
+sqlalchemy
+psycopg2-binary
+sqlalchemy-utils
+python-jose[cryptography]
+passlib[bcrypt]

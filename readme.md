@@ -1,11 +1,5 @@
-Database
-
-User table
-
 JWT
 
-login form
+logging
 
-sqlalchemy
-
-docker compose with database
+roles and user permissions
